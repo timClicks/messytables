@@ -47,6 +47,32 @@ class StringType(CellType):
             raise ValueError()
         return value
 
+class NullType(CellType):
+    """ An empty value.
+
+    >>> null = NullType()
+    >>> null.test('null')
+    True
+    >>> null.test('')
+    True
+    >>> null.cast('hi there')
+    None
+    """
+    guessing_weight = 1.5
+
+    def test(self, value):
+        # http://en.wikipedia.org/wiki/Comparison_of_data_serialization_formats#Syntax_comparison_of_human-readable_formats
+        if value is None: 
+            return True
+        elif isinstance(value, basestring) and 'null' == value.lower().strip():
+            return True
+        else:
+            return False
+
+    def cast(self, value):
+        return None
+
+
 class IntegerType(CellType):
     """ An integer field. """
     guessing_weight = 1.5
